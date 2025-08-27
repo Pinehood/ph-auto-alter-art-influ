@@ -4,6 +4,10 @@ const NICHES_CSV = process.env.NICHES || "random interesting facts";
 const CAPTION_SUFFIX = process.env.CAPTION_SUFFIX || "";
 const REEL_DURATION = parseInt(process.env.REEL_DURATION || "12", 10);
 const REEL_MARGIN = parseInt(process.env.REEL_MARGIN || "24", 10);
+const CREATE_MEDIA = (process.env.CREATE_MEDIA?.split(",") || [
+  "post",
+  "reel",
+]) as ("post" | "reel")[];
 
 const AWS_REGION = process.env.S3_REGION || "eu-central-1";
 const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID!;
@@ -34,6 +38,7 @@ export {
   CAPTION_SUFFIX,
   REEL_DURATION,
   REEL_MARGIN,
+  CREATE_MEDIA,
   AWS_REGION,
   AWS_ACCESS_KEY_ID,
   AWS_SECRET_ACCESS_KEY,
