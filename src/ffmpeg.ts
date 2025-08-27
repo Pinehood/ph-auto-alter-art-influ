@@ -14,6 +14,7 @@ export class FFMPEG {
   async makeReelFromImage(imageUrl: string, narrationMp3?: Buffer) {
     this.logger.info(`Making Reel from image...`);
     const workdir = path.join(process.cwd(), ".work");
+    await fs.rm(workdir, { recursive: true, force: true }).catch(() => {});
     await fs.mkdir(workdir, { recursive: true });
     const imgPath = path.join(workdir, `img-${Date.now()}.jpg`);
     const mp3Path = path.join(workdir, `vox-${Date.now()}.mp3`);
