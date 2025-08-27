@@ -3,14 +3,14 @@ import dotenv from "dotenv";
 import cron from "node-cron";
 import { CAPTION_SUFFIX, CREATE_MEDIA, CRON_EXPR, TZ } from "./environment";
 import { OpenAi } from "./openai";
-import { S3 } from "./s3";
+import { AWS } from "./aws";
 import { FFMPEG } from "./ffmpeg";
 import { Instagram } from "./instagram";
 
 dotenv.config();
 
 const openai = new OpenAi();
-const s3 = new S3();
+const aws = new AWS();
 const ffmpeg = new FFMPEG();
 const instagram = new Instagram();
 
@@ -44,7 +44,11 @@ async function runOnce() {
 
     console.log(`[S3] Generating image url...`);
     const imgPath = `posters/${niche.replace(/ /g, "_")}_${Date.now()}.png`;
-    const imgUrl = await s3.uploadImageFromOpenAi(img, imgPath, "image/png");
+    const imgUrl = await aws.uploadImageFromOpenAiToS3(
+      img,
+      imgPath,
+      "image/png"
+    );
     console.log(`[S3] Image URL: ${imgUrl}`);
 
     console.log(`[FFMPEG] Making Reel video...`);
@@ -53,7 +57,11 @@ async function runOnce() {
 
     console.log(`[S3] Uploading Reel to S3 and presigning...`);
     const vidName = `reels/reel-${Date.now()}.mp4`;
-    const vidUrl = await s3.uploadAndPresign(vidPath, vidName, "video/mp4");
+    const vidUrl = await aws.uploadToS3AndPresign(
+      vidPath,
+      vidName,
+      "video/mp4"
+    );
     console.log(`[S3] Presigned video URL: ${vidUrl}`);
 
     const caption = `${text}\n\n${CAPTION_SUFFIX}`.trim();

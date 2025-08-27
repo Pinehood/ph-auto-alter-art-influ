@@ -1,8 +1,4 @@
-import {
-  S3 as AwsS3,
-  PutObjectCommand,
-  GetObjectCommand,
-} from "@aws-sdk/client-s3";
+import { S3, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import crypto from "node:crypto";
 import fs from "node:fs";
@@ -14,11 +10,11 @@ import {
   AWS_S3_TTL,
 } from "./environment";
 
-export class S3 {
-  private readonly client: AwsS3;
+export class AWS {
+  private readonly client: S3;
 
   constructor() {
-    this.client = new AwsS3({
+    this.client = new S3({
       region: AWS_REGION,
       credentials:
         AWS_ACCESS_KEY_ID && AWS_SECRET_ACCESS_KEY
@@ -30,7 +26,7 @@ export class S3 {
     });
   }
 
-  async uploadImageFromOpenAi(
+  async uploadImageFromOpenAiToS3(
     base64Json: string,
     key: string,
     contentType?: string
@@ -62,7 +58,7 @@ export class S3 {
     return presigned;
   }
 
-  async uploadAndPresign(path: string, key: string, contentType: string) {
+  async uploadToS3AndPresign(path: string, key: string, contentType: string) {
     await this.client.send(
       new PutObjectCommand({
         Bucket: AWS_S3_BUCKET,
