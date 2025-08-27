@@ -19,7 +19,7 @@ const AWS_S3_TTL = parseInt(
 const AWS_S3_BUCKET = process.env.AWS_S3_BUCKET || "your-default-bucket-name";
 
 const IG_GRAPH_BASE =
-  process.env.IG_GRAPH_BASE || "https://graph.facebook.com/v25.0";
+  process.env.IG_GRAPH_BASE || "https://graph.facebook.com/v23.0";
 const IG_USER_ID = process.env.IG_USER_ID!;
 const IG_ACCESS_TOKEN = process.env.IG_ACCESS_TOKEN!;
 const IG_APP_ID = process.env.IG_APP_ID!;

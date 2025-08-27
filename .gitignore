@@ -10,3 +10,4 @@
 npm-debug.log
 generated-eval-func-*.js
 .env
+.work/
