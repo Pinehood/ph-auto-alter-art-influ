@@ -3,12 +3,16 @@ import ffmpegPath from "ffmpeg-static";
 import ffmpeg from "fluent-ffmpeg";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { Logger } from "./logger";
 import { REEL_DURATION, REEL_MARGIN } from "./environment";
 
 ffmpeg.setFfmpegPath(ffmpegPath || "");
 
 export class FFMPEG {
+  private readonly logger = new Logger();
+
   async makeReelFromImage(imageUrl: string, narrationMp3?: Buffer) {
+    this.logger.info(`Making Reel from image...`);
     const workdir = path.join(process.cwd(), ".work");
     await fs.mkdir(workdir, { recursive: true });
     const imgPath = path.join(workdir, `img-${Date.now()}.jpg`);
@@ -21,7 +25,7 @@ export class FFMPEG {
       await fs.writeFile(mp3Path, narrationMp3);
       haveAudio = true;
     }
-    const vf = [
+    const vfs = [
       `scale=${1080 - 2 * REEL_MARGIN}:${
         1920 - 2 * REEL_MARGIN
       }:force_original_aspect_ratio=decrease`,
@@ -34,7 +38,7 @@ export class FFMPEG {
         .input(imgPath)
         .loop(REEL_DURATION)
         .inputOptions([`-t ${REEL_DURATION}`])
-        .videoFilters(vf)
+        .videoFilters(vfs)
         .fps(30)
         .size("1080x1920")
         .videoCodec("libx264")
@@ -66,6 +70,7 @@ export class FFMPEG {
         .on("error", (err: any) => reject(err))
         .run();
     });
+    this.logger.info(`Reel video ready at: ${outPath}`);
     return outPath;
   }
 }

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Logger } from "./logger";
 import {
   IG_GRAPH_BASE,
   IG_USER_ID,
@@ -8,6 +9,8 @@ import {
 } from "./environment";
 
 export class Instagram {
+  private readonly logger = new Logger();
+
   async getLongLivedToken() {
     const params = new URLSearchParams({
       grant_type: "fb_exchange_token",
@@ -27,6 +30,7 @@ export class Instagram {
   }
 
   async publishPhotoPost(imageUrl: string, caption: string) {
+    this.logger.info(`Publishing Photo Post...`);
     const containerRes = await axios.post(
       `${IG_GRAPH_BASE}/${IG_USER_ID}/media`,
       null,
@@ -50,10 +54,13 @@ export class Instagram {
         },
       }
     );
-    return publishRes.data;
+    const post = publishRes.data;
+    this.logger.info(`Photo Post published: ${post.id}`);
+    return post;
   }
 
   async publishVideoReel(videoUrl: string, caption: string) {
+    this.logger.info(`Publishing Video Reel...`);
     const create = await axios.post(
       `${IG_GRAPH_BASE}/${IG_USER_ID}/media`,
       null,
@@ -89,6 +96,8 @@ export class Instagram {
         },
       }
     );
-    return publish.data;
+    const reel = publish.data;
+    this.logger.info(`Video Reel published: ${reel.id}`);
+    return reel;
   }
 }
