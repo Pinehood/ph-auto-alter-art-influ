@@ -1,0 +1,53 @@
+name: Continuous Integration
+on:
+  push:
+    branches: [main, develop]
+    paths_ignore: ["**/*.md", "**/*.txt", "**/*ignore", "dev-tools/**"]
+  pull_request:
+    branches: [develop]
+    paths_ignore: ["**/*.md", "**/*.txt", "**/*ignore", "dev-tools/**"]
+jobs:
+  integrate:
+    name: Install & Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+      - name: Setup
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+          cache: "npm"
+      - name: Install
+        run: npm ci
+      - name: Build
+        run: npm run build
+  build:
+    needs: integrate
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+    if: github.event_name != 'pull_request'
+    env:
+      ECR_REGISTRY: ${{ secrets.AWS_ECR_REGISTRY }}
+      BRANCH: ${{ github.ref_name }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Setup QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Setup Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ vars.AWS_REGION }}
+      - name: Login to AWS ECR
+        uses: aws-actions/amazon-ecr-login@v2
+        with:
+          mask-password: "true"
+      - name: Build & Upload Docker Image to AWS ECR
+        run: docker buildx build --platform linux/amd64,linux/arm64 -f ./Dockerfile -t $ECR_REGISTRY/ph-auto-alter-art-influ:latest-$BRANCH --push .
