@@ -57,14 +57,14 @@ export class AWS {
     return presigned;
   }
 
-  async uploadToS3AndPresign(path: string, key: string, contentType: string) {
+  async uploadReelToS3FromFilePath(path: string, key: string) {
     this.logger.info(`Uploading file to S3 and generating URL...`);
     await this.client.send(
       new PutObjectCommand({
         Bucket: AWS_S3_BUCKET,
         Key: key,
         Body: fs.createReadStream(path),
-        ContentType: contentType,
+        ContentType: "video/mp4",
       })
     );
     const presigned = await getSignedUrl(

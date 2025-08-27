@@ -11,6 +11,13 @@ import {
 export class Instagram {
   private readonly logger = new Logger();
 
+  async getIdentity() {
+    const response = await axios.get(`${IG_GRAPH_BASE}/${IG_USER_ID}`, {
+      params: { fields: "id,username", access_token: IG_ACCESS_TOKEN },
+    });
+    return response.data;
+  }
+
   async getLongLivedToken() {
     const params = new URLSearchParams({
       grant_type: "fb_exchange_token",
@@ -19,7 +26,7 @@ export class Instagram {
       fb_exchange_token: IG_ACCESS_TOKEN,
     });
     const { data } = await axios.post(
-      "https://graph.facebook.com/v23.0/oauth/access_token",
+      `${IG_GRAPH_BASE}/oauth/access_token`,
       params
     );
     return data as {
