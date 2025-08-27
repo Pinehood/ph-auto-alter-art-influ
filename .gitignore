@@ -1,0 +1,12 @@
+/node_modules
+/.idea
+/.awcache
+/.vscode
+/quick-start
+/test
+/coverage
+/.nyc_output
+/dist
+npm-debug.log
+generated-eval-func-*.js
+.env
