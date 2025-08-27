@@ -91,7 +91,7 @@ export class S3 {
     const pad = s.length % 4;
     if (pad) s += "=".repeat(4 - pad);
     const buf = Buffer.from(s, "base64");
-    if (buf.slice(0, 8).toString("hex") !== "89504e470d0a1a0a") {
+    if (buf.subarray(0, 8).toString("hex") !== "89504e470d0a1a0a") {
       throw new Error("Not a PNG (magic header mismatch).");
     }
     return buf;

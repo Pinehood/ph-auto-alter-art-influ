@@ -1,7 +1,7 @@
 import "dotenv/config";
 import dotenv from "dotenv";
 import cron from "node-cron";
-import { CAPTION_SUFFIX, CRON_EXPR, TZ } from "./environment";
+import { CAPTION_SUFFIX, CREATE_MEDIA, CRON_EXPR, TZ } from "./environment";
 import { OpenAi } from "./openai";
 import { S3 } from "./s3";
 import { FFMPEG } from "./ffmpeg";
@@ -56,14 +56,18 @@ async function runOnce() {
     const vidUrl = await s3.uploadAndPresign(vidPath, vidName, "video/mp4");
     console.log(`[S3] Presigned video URL: ${vidUrl}`);
 
-    console.log(`[Instagram] Publishing Photo Post...`);
     const caption = `${text}\n\n${CAPTION_SUFFIX}`.trim();
-    const post = await instagram.publishPhotoPost(imgUrl, caption);
-    console.log(`[Instagram] Photo published: ${post.id}`);
+    if (CREATE_MEDIA.includes("post")) {
+      console.log(`[Instagram] Publishing Photo Post...`);
+      const post = await instagram.publishPhotoPost(imgUrl, caption);
+      console.log(`[Instagram] Photo published: ${post.id}`);
+    }
 
-    console.log(`[Instagram] Publishing Reel...`);
-    const r = await instagram.publishVideoReel(vidUrl, caption);
-    console.log(`[Instagram] Reel published: ${r.id}`);
+    if (CREATE_MEDIA.includes("reel")) {
+      console.log(`[Instagram] Publishing Reel...`);
+      const reel = await instagram.publishVideoReel(vidUrl, caption);
+      console.log(`[Instagram] Reel published: ${reel.id}`);
+    }
   } catch (err: any) {
     console.error("ERROR:", err?.response?.data || err?.message || err);
   }
