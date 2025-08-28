@@ -1,5 +1,5 @@
 const TZ = process.env.TZ || "Europe/Zagreb";
-const CRON_EXPR = process.env.CRON || "0 * * * *";
+const CRON_EXPR = process.env.CRON_EXPR || "0 */6 * * *";
 const NICHES_CSV = process.env.NICHES || "random interesting facts";
 const CAPTION_SUFFIX = process.env.CAPTION_SUFFIX || "";
 const REEL_DURATION = parseInt(process.env.REEL_DURATION || "12", 10);
