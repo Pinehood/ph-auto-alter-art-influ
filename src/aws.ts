@@ -45,16 +45,7 @@ export class AWS {
       })
     );
     fs.rmSync("image.png");
-    const presigned = await getSignedUrl(
-      this.client,
-      new GetObjectCommand({
-        Bucket: AWS_S3_BUCKET,
-        Key: key,
-      }),
-      { expiresIn: AWS_S3_TTL }
-    );
-    this.logger.info(`Presigned URL generated: ${presigned}`);
-    return presigned;
+    return this.getPresignedS3Url(key);
   }
 
   async uploadReelToS3FromFilePath(path: string, key: string) {
@@ -67,6 +58,10 @@ export class AWS {
         ContentType: "video/mp4",
       })
     );
+    return this.getPresignedS3Url(key);
+  }
+
+  async getPresignedS3Url(key: string) {
     const presigned = await getSignedUrl(
       this.client,
       new GetObjectCommand({

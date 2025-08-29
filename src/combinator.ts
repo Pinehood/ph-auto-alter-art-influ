@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { setTimeout as sleep } from "timers/promises";
-import { CAPTION_SUFFIX } from "./environment";
+import { CAPTION_SUFFIX, COMBO_MODE } from "./environment";
 import { Logger } from "./logger";
 import { AWS } from "./aws";
 import { FFMPEG } from "./ffmpeg";
@@ -43,15 +43,26 @@ async function run() {
       return;
     }
 
-    const vidPath = await ffmpeg.combineVideos(reels);
-    const vidName = `combined/combined-${Date.now()}.mp4`;
-    const vidUrl = await aws.uploadReelToS3FromFilePath(vidPath, vidName);
-    await sleep(500);
-
     const caption =
       `Random interesting facts compilation.\n\n${CAPTION_SUFFIX}`.trim();
-    await instagram.publishVideoReel(vidUrl, caption);
-    await sleep(500);
+    if (COMBO_MODE === "reel") {
+      const vidPath = await ffmpeg.combineVideos(reels);
+      const vidName = `combined/combined-${Date.now()}.mp4`;
+      const vidUrl = await aws.uploadReelToS3FromFilePath(vidPath, vidName);
+      await instagram.publishVideoReel(vidUrl, caption);
+    } else if (COMBO_MODE === "carousel") {
+      const reelsUrls = await Promise.all(
+        reels.map((reel) => {
+          return aws.getPresignedS3Url(
+            `reels/${reel.substring(reel.lastIndexOf("/") + 1)}`
+          );
+        })
+      );
+      await instagram.publishCarouselPost(
+        reelsUrls.map((url) => ({ type: "video", url })),
+        caption
+      );
+    }
   } catch (err: any) {
     logger.error("ERROR", err?.response?.data || err?.message || err);
   }

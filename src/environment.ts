@@ -9,6 +9,10 @@ const CREATE_MEDIA = (process.env.CREATE_MEDIA?.split(",") || [
   "reel",
 ]) as ("post" | "reel")[];
 
+const COMBO_MODE = (process.env.COMBO_MODE || "carousel") as
+  | "carousel"
+  | "reel";
+
 const AWS_REGION = process.env.S3_REGION || "eu-central-1";
 const AWS_ACCESS_KEY_ID = process.env.AWS_ACCESS_KEY_ID!;
 const AWS_SECRET_ACCESS_KEY = process.env.AWS_SECRET_ACCESS_KEY!;
@@ -39,6 +43,7 @@ export {
   REEL_DURATION,
   REEL_MARGIN,
   CREATE_MEDIA,
+  COMBO_MODE,
   AWS_REGION,
   AWS_ACCESS_KEY_ID,
   AWS_SECRET_ACCESS_KEY,

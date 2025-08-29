@@ -1,4 +1,5 @@
 import axios from "axios";
+import { setTimeout as sleep } from "timers/promises";
 import { Logger } from "./logger";
 import {
   IG_GRAPH_BASE,
@@ -106,5 +107,101 @@ export class Instagram {
     const reel = publish.data;
     this.logger.info(`Video Reel published: ${reel.id}`);
     return reel;
+  }
+
+  async publishCarouselPost(
+    items: { url: string; type: "image" | "video" }[],
+    caption: string
+  ) {
+    if (items.length < 2 || items.length > 10) {
+      throw new Error("Carousel must have between 2 and 10 items.");
+    }
+
+    this.logger.info(`Creating ${items.length} carousel child containers...`);
+    const childIds: string[] = [];
+    for (const it of items) {
+      if (it.type === "image") {
+        const id = await this.createImageItem(it.url);
+        childIds.push(id);
+      } else {
+        const id = await this.createVideoItem(it.url);
+        childIds.push(id);
+      }
+    }
+    this.logger.info("Creating carousel container...");
+    const { data: carousel } = await axios.post(
+      `${IG_GRAPH_BASE}/${IG_USER_ID}/media`,
+      null,
+      {
+        params: {
+          media_type: "CAROUSEL",
+          caption,
+          children: childIds.join(","),
+          access_token: IG_ACCESS_TOKEN,
+        },
+      }
+    );
+    const carouselId = carousel.id as string;
+    for (let i = 0; i < 12; i++) {
+      const { data: st } = await axios.get(`${IG_GRAPH_BASE}/${carouselId}`, {
+        params: { fields: "status,status_code", access_token: IG_ACCESS_TOKEN },
+      });
+      const code = st?.status_code || st?.status;
+      if (code === "FINISHED" || code === "READY") break;
+      if (code === "ERROR")
+        throw new Error("Carousel container failed processing");
+      await sleep(2500);
+    }
+    this.logger.info("Publishing carousel...");
+    const { data: published } = await axios.post(
+      `${IG_GRAPH_BASE}/${IG_USER_ID}/media_publish`,
+      null,
+      { params: { creation_id: carouselId, access_token: IG_ACCESS_TOKEN } }
+    );
+    this.logger.info(`Carousel published: ${published.id}`);
+    return published;
+  }
+
+  private async createImageItem(url: string) {
+    const { data } = await axios.post(
+      `${IG_GRAPH_BASE}/${IG_USER_ID}/media`,
+      null,
+      {
+        params: {
+          image_url: url,
+          is_carousel_item: true,
+          access_token: IG_ACCESS_TOKEN,
+        },
+      }
+    );
+    return data.id as string;
+  }
+
+  private async createVideoItem(url: string) {
+    const { data } = await axios.post(
+      `${IG_GRAPH_BASE}/${IG_USER_ID}/media`,
+      null,
+      {
+        params: {
+          media_type: "VIDEO",
+          video_url: url,
+          is_carousel_item: true,
+          access_token: IG_ACCESS_TOKEN,
+        },
+      }
+    );
+    const id = data.id as string;
+    for (let i = 0; i < 30; i++) {
+      const { data: st } = await axios.get(`${IG_GRAPH_BASE}/${id}`, {
+        params: { fields: "status,status_code", access_token: IG_ACCESS_TOKEN },
+      });
+      const code = st?.status_code || st?.status;
+      if (code === "FINISHED") break;
+      if (code === "ERROR") throw new Error("Video child failed processing");
+      await sleep(2500);
+      if (i === 29)
+        throw new Error("Timeout waiting for video child processing");
+    }
+    return id;
   }
 }
