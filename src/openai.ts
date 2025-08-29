@@ -10,7 +10,7 @@ import {
 } from "./environment";
 
 const FACTS_PROMPT = `
-    You produce one quirky, accurate, 15-25 word fact in the given niche.
+    You produce one quirky, accurate, 15-25 word fact or text or whatever needed in the given niche.
     - Keep it family-friendly and brand-safe.
     - Avoid sensitive/medical/financial claims.
     - No hashtags or emojis.
@@ -23,7 +23,8 @@ const POSTER_PROMPT = (fact: string, niche: string) => `
 
     "${fact}"
 
-    Use a simple, modern color palette. Include subtle, relevant illustration/background that fits the topic.
+    Use a simple, modern color palette. 
+    Include subtle, relevant illustration or background that fits the topic.
     Do not include watermarks or logos.
   `;
 
@@ -38,6 +39,7 @@ export class OpenAi {
   pickNiche(nichesCsv?: string) {
     const csv = nichesCsv || NICHES_CSV;
     const list = csv
+      .replace(/\n/g, "")
       .split(",")
       .map((s) => s.trim())
       .filter(Boolean);
