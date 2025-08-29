@@ -1,5 +1,6 @@
 import axios from "axios";
 import ffmpegPath from "ffmpeg-static";
+import ffprobePath from "ffprobe-static";
 import ffmpeg from "fluent-ffmpeg";
 import fs from "node:fs/promises";
 import path from "node:path";
@@ -7,6 +8,7 @@ import { Logger } from "./logger";
 import { REEL_DURATION, REEL_MARGIN } from "./environment";
 
 ffmpeg.setFfmpegPath(ffmpegPath || "");
+ffmpeg.setFfprobePath(ffprobePath.path || "");
 
 export class FFMPEG {
   private readonly logger = new Logger();
@@ -146,7 +148,7 @@ export class FFMPEG {
       this.logger.info("FFmpeg: using fast concat (-f concat -c copy)...");
       const listPath = path.join(workdir, `concat-${Date.now()}.txt`);
       const listContent = paths
-        .map((p) => `file '${p.replace(/'/g, "'\\''")}'`)
+        .map((p) => `file '../${p.replace(/'/g, "'\\''")}'`)
         .join("\n");
       await fs.writeFile(listPath, listContent);
       await new Promise<void>((resolve, reject) => {

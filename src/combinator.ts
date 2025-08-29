@@ -37,7 +37,7 @@ async function run() {
     logger.info(`Instagram identity verified: ${JSON.stringify(identity)}`);
     logger.info(`Long-lived token retrieved: ${token.access_token}`);
 
-    const reels = listFiles("./reels");
+    const reels = listFiles(".reels").sort();
     if (reels.length < 2) {
       logger.warn("Not enough reels to combine");
       return;
