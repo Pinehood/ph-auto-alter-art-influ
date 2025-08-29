@@ -68,7 +68,7 @@ async function run() {
   );
   await run();
   cron.schedule(CRON_EXPR, async () => await run(), { timezone: TZ });
-  logger.info(`Cron scheduled: "${CRON_EXPR}" (${TZ}) - runs every hour.`);
+  logger.info(`Cron scheduled: "${CRON_EXPR}" (${TZ}).`);
 })().catch((err) => {
   logger.error("Fatal", err);
   process.exit(1);
