@@ -4,13 +4,14 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "tsx watch src/main.ts",
+    "main": "tsx watch src/main.ts",
+    "comb": "tsx watch src/combinator.ts",
     "start": "node --env-file=.env --enable-source-maps dist/main.js",
     "build": "tsc"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.634.0",
-    "@aws-sdk/s3-request-presigner": "^3.634.0",
+    "@aws-sdk/client-s3": "^3.878.0",
+    "@aws-sdk/s3-request-presigner": "^3.878.0",
     "axios": "^1.7.2",
     "dotenv": "^17.2.1",
     "ffmpeg-static": "^5.2.0",
