@@ -4,8 +4,8 @@ import ffprobePath from "ffprobe-static";
 import ffmpeg from "fluent-ffmpeg";
 import fs from "node:fs/promises";
 import path from "node:path";
-import { Logger } from "./logger";
-import { REEL_DURATION, REEL_MARGIN } from "./environment";
+import { Logger } from "../utils/logger";
+import { REEL_DURATION, REEL_MARGIN } from "../utils/environment";
 
 ffmpeg.setFfmpegPath(ffmpegPath || "");
 ffmpeg.setFfprobePath(ffprobePath.path || "");

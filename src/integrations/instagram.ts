@@ -1,13 +1,13 @@
 import axios from "axios";
 import { setTimeout as sleep } from "timers/promises";
-import { Logger } from "./logger";
+import { Logger } from "../utils/logger";
 import {
   IG_GRAPH_BASE,
   IG_USER_ID,
   IG_ACCESS_TOKEN,
   IG_APP_ID,
   IG_APP_SECRET,
-} from "./environment";
+} from "../utils/environment";
 
 export class Instagram {
   private readonly logger = new Logger();

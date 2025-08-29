@@ -2,14 +2,14 @@ import { S3, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import crypto from "node:crypto";
 import fs from "node:fs";
-import { Logger } from "./logger";
+import { Logger } from "../utils/logger";
 import {
   AWS_REGION,
   AWS_S3_BUCKET,
   AWS_ACCESS_KEY_ID,
   AWS_SECRET_ACCESS_KEY,
   AWS_S3_TTL,
-} from "./environment";
+} from "../utils/environment";
 
 export class AWS {
   private readonly logger = new Logger();

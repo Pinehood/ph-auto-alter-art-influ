@@ -3,11 +3,8 @@ import dotenv from "dotenv";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { setTimeout as sleep } from "timers/promises";
-import { CAPTION_SUFFIX, COMBO_MODE } from "./environment";
-import { Logger } from "./logger";
-import { AWS } from "./aws";
-import { FFMPEG } from "./ffmpeg";
-import { Instagram } from "./instagram";
+import { CAPTION_SUFFIX, COMBO_MODE, Logger } from "./utils";
+import { AWS, FFMPEG, Instagram } from "./integrations";
 
 dotenv.config();
 

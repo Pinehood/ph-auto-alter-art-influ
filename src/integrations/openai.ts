@@ -1,5 +1,5 @@
 import OpenAI from "openai";
-import { Logger } from "./logger";
+import { Logger } from "../utils/logger";
 import {
   OPENAI_API_KEY,
   NICHES_CSV,
@@ -7,7 +7,7 @@ import {
   OPENAI_IMAGE_MODEL,
   OPENAI_TTS_MODEL,
   OPENAI_TTS_VOICE,
-} from "./environment";
+} from "../utils/environment";
 
 const FACTS_PROMPT = `
     You produce one quirky, accurate, 15-25 word fact or text or whatever needed in the given niche.
