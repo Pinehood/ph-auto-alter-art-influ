@@ -10,8 +10,8 @@
     "build": "tsc"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.878.0",
-    "@aws-sdk/s3-request-presigner": "^3.878.0",
+    "@aws-sdk/client-s3": "^3.879.0",
+    "@aws-sdk/s3-request-presigner": "^3.879.0",
     "axios": "^1.7.2",
     "dotenv": "^17.2.1",
     "ffmpeg-static": "^5.2.0",
