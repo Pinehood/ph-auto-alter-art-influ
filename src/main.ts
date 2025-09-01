@@ -2,7 +2,14 @@ import "dotenv/config";
 import dotenv from "dotenv";
 import cron from "node-cron";
 import { setTimeout as sleep } from "timers/promises";
-import { Logger, CAPTION_SUFFIX, CREATE_MEDIA, CRON_EXPR, TZ } from "./utils";
+import {
+  Logger,
+  CAPTION_SUFFIX,
+  CREATE_MEDIA,
+  CRON_EXPR,
+  TZ,
+  retry,
+} from "./utils";
 import { AWS, FFMPEG, Instagram, OpenAi } from "./integrations";
 
 dotenv.config();
@@ -45,12 +52,12 @@ async function run() {
 
     const caption = `${text}\n\n${CAPTION_SUFFIX}`.trim();
     if (CREATE_MEDIA.includes("post")) {
-      await instagram.publishPhotoPost(imgUrl, caption);
+      await retry(() => instagram.publishPhotoPost(imgUrl, caption));
       await sleep(500);
     }
 
     if (CREATE_MEDIA.includes("reel")) {
-      await instagram.publishVideoReel(vidUrl, caption);
+      await retry(() => instagram.publishVideoReel(vidUrl, caption));
       await sleep(500);
     }
   } catch (err: any) {

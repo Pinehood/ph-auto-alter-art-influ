@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { setTimeout as sleep } from "timers/promises";
-import { CAPTION_SUFFIX, COMBO_MODE, Logger } from "./utils";
+import { CAPTION_SUFFIX, COMBO_MODE, Logger, retry } from "./utils";
 import { AWS, FFMPEG, Instagram } from "./integrations";
 
 dotenv.config();
@@ -46,7 +46,7 @@ async function run() {
       const vidPath = await ffmpeg.combineVideos(reels);
       const vidName = `combined/combined-${Date.now()}.mp4`;
       const vidUrl = await aws.uploadReelToS3FromFilePath(vidPath, vidName);
-      await instagram.publishVideoReel(vidUrl, caption);
+      await retry(() => instagram.publishVideoReel(vidUrl, caption));
     } else if (COMBO_MODE === "carousel") {
       const reelsUrls = await Promise.all(
         reels.map((reel) => {
@@ -55,9 +55,11 @@ async function run() {
           );
         })
       );
-      await instagram.publishCarouselPost(
-        reelsUrls.map((url) => ({ type: "video", url })),
-        caption
+      await retry(() =>
+        instagram.publishCarouselPost(
+          reelsUrls.map((url) => ({ type: "video", url })),
+          caption
+        )
       );
     }
   } catch (err: any) {
