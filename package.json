@@ -1,7 +1,6 @@
 {
   "name": "ph-auto-alter-art-influ",
   "version": "0.0.1",
-  "type": "module",
   "private": true,
   "scripts": {
     "main": "tsx watch src/main.ts",
