@@ -1,0 +1,38 @@
+## Description
+
+A summary of the addition, update or fix:
+
+## Checklist
+
+Pull Request requirements:
+
+- [ ] I have performed a self-review of my own code
+- [ ] I have commented my code in particularly hard-to-understand areas
+- [ ] I have made corresponding changes to the documentation
+- [ ] I ensured that my changes generate no new warnings or errors
+
+## Type
+
+Type of change that this Pull Request introduces:
+
+- [ ] Bug fix (non-breaking, fixes an issue)
+- [ ] Feature (non-breaking, adds functionality)
+- [ ] Breaking change (fix or feature that would cause malfunction)
+- [ ] Code style change (formatting)
+- [ ] Refactor (no functional changes)
+- [ ] Build related changes
+- [ ] CI related changes
+- [ ] Other changes (describe)
+
+## Issues
+
+Link(s) to a relevant Issue(s):
+
+- #0
+
+## Breaking change
+
+- [ ] Yes
+- [ ] No
+
+The impact and migration instructions for existing applications:

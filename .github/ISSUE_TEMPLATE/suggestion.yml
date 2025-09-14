@@ -1,0 +1,48 @@
+name: "Suggestion for Improving Performance"
+description: "I have a suggestion that might improve the performance!"
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### We use GitHub Issues to track bug reports, feature requests and regressions.
+
+        **NOTE:** You don't need to answer questions, that you know aren't relevant.
+
+        ---
+
+  - type: checkboxes
+    attributes:
+      label: "Is there an existing issue that is already proposing this?"
+      description: "Please search [here](../issues?q=is%3Aissue) to see if an issue already exists for this."
+      options:
+        - label: "I have searched the existing issues."
+          required: true
+
+  - type: input
+    validations:
+      required: true
+    attributes:
+      label: "Project version"
+      description: "Which version do you intend to improve?"
+      placeholder: "X.Y.Z"
+
+  - type: textarea
+    attributes:
+      label: "Is your performance suggestion related to a problem? If so, please describe it."
+      description: "A clear and concise description (or code) of what the problem is."
+
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: "Describe the performance enhancement you are proposing and how we can try it out."
+
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: "Benchmarks result or another proof (POC, MVP, gist, etc.)"
+      description: |
+        If you've already prototyped a solution, share your results here.
+        If not, what makes you believe there will be a performance improvement?

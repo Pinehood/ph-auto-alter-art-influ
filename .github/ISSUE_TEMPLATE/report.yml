@@ -1,0 +1,74 @@
+name: "Bug Report"
+description: "If something isn't working as expected"
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ### We use GitHub Issues to track bug reports, feature requests and regressions.
+
+        **NOTE:** You don't need to answer questions, that you know aren't relevant.
+
+        ---
+
+  - type: checkboxes
+    attributes:
+      label: "Is there an existing issue for that is already reporting this bug?"
+      description: "Please search [here](../issues?q=is%3Aissue) to see if an issue already exists for the bug that you are reporting."
+      options:
+        - label: "I have searched the existing issues."
+          required: true
+
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: "Current behavior"
+      description: "How the issue manifests? Steps to reproduce?"
+
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: "Expected behavior"
+      description: "A clear and concise description (or code) of what you expected to happened."
+
+  - type: input
+    validations:
+      required: true
+    attributes:
+      label: "Project version"
+      placeholder: "X.Y.Z"
+
+  - type: textarea
+    validations:
+      required: true
+    attributes:
+      label: "Packages and versions"
+      description: |
+        You could leave your whole `package.json` or other similar dependencies list here.
+
+  - type: input
+    attributes:
+      label: "Programming language version"
+      description: "Which version of the programming language are you using?"
+      placeholder: "Node.js v18.10.0"
+
+  - type: checkboxes
+    validations:
+      required: true
+    attributes:
+      label: "In which operating systems have you tested?"
+      options:
+        - label: macOS
+        - label: Windows
+        - label: Linux
+        - label: Android
+        - label: iOS
+
+  - type: textarea
+    attributes:
+      label: "Other"
+      description: |
+        Anything else relevant? Logs, OS version, IDE, package manager, etc.
+        **NOTE:** You can attach images, recordings or log files by clicking this area to highlight it and then dragging files in.

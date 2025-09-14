@@ -1,0 +1,8 @@
+daysUntilLock: 90
+skipCreatedBefore: false
+exemptLabels: []
+setLockReason: true
+lockLabel: false
+lockComment: >
+  This thread has been automatically locked, because there has not been
+  any recent activity.
