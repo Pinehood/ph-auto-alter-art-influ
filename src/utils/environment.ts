@@ -32,8 +32,8 @@ const IG_APP_SECRET = process.env.IG_APP_SECRET!;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY!;
 const OPENAI_TTS_MODEL = process.env.OPENAI_TTS_MODEL || "tts-1";
 const OPENAI_TTS_VOICE = process.env.OPENAI_TTS_VOICE || "alloy";
-const OPENAI_FACT_MODEL = process.env.OPENAI_FACT_MODEL || "gpt-4o-mini";
-const OPENAI_IMAGE_MODEL = process.env.OPENAI_IMAGE_MODEL || "gpt-image-1";
+const OPENAI_FACT_MODEL = process.env.OPENAI_FACT_MODEL || "gpt-5-mini";
+const OPENAI_IMAGE_MODEL = process.env.OPENAI_IMAGE_MODEL || "gpt-image-1-mini";
 
 export {
   TZ,
