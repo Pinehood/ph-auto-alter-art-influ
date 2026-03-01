@@ -28,7 +28,7 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: ${{ vars.NODE_VERSION }}
-          cache: "npm"
+          cache: "pnpm"
       - name: Install
         run: pnpm install --frozen-lockfile
       - name: Build
