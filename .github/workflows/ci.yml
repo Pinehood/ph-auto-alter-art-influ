@@ -2,10 +2,17 @@ name: Continuous Integration
 on:
   push:
     branches: [main, develop]
-    paths_ignore: ["**/*.md", "**/*.txt", "**/*ignore", "dev-tools/**"]
+    paths_ignore:
+      [
+        "**.md",
+        ".env",
+        ".gitignore",
+        ".prettierrc",
+        ".prettierignore",
+        ".github"
+      ]
   pull_request:
     branches: [develop]
-    paths_ignore: ["**/*.md", "**/*.txt", "**/*ignore", "dev-tools/**"]
 jobs:
   integrate:
     name: Install & Build
@@ -13,15 +20,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v6
-      - name: Setup
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.9.0
+      - name: Setup Node
         uses: actions/setup-node@v6
         with:
           node-version: ${{ vars.NODE_VERSION }}
           cache: "npm"
       - name: Install
-        run: npm ci
+        run: pnpm install --frozen-lockfile
       - name: Build
-        run: npm run build
+        run: pnpm run build
   build:
     needs: integrate
     name: Build Docker Images
