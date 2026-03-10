@@ -1,14 +1,34 @@
 import axios from "axios";
-import ffmpegPath from "ffmpeg-static";
-import ffprobePath from "ffprobe-static";
 import ffmpeg from "fluent-ffmpeg";
+import { execFileSync } from "node:child_process";
 import fs from "node:fs/promises";
 import path from "node:path";
 import { Logger } from "../utils/logger";
 import { REEL_DURATION, REEL_MARGIN } from "../utils/environment";
 
-ffmpeg.setFfmpegPath(ffmpegPath || "");
-ffmpeg.setFfprobePath(ffprobePath.path || "");
+function resolveStaticBinary(
+  importFn: () => any,
+  field?: string,
+): string | null {
+  try {
+    const mod = importFn();
+    const p = field ? mod[field] : mod;
+    if (typeof p === "string" && p.length > 0) {
+      execFileSync(p, ["-version"], { stdio: "ignore" });
+      return p;
+    }
+  } catch {}
+  return null;
+}
+
+const ffmpegPath = resolveStaticBinary(() => require("ffmpeg-static"));
+const ffprobePath = resolveStaticBinary(
+  () => require("ffprobe-static"),
+  "path",
+);
+
+if (ffmpegPath) ffmpeg.setFfmpegPath(ffmpegPath);
+if (ffprobePath) ffmpeg.setFfprobePath(ffprobePath);
 
 export class FFMPEG {
   private readonly logger = new Logger();
