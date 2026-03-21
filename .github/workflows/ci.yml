@@ -1,4 +1,5 @@
 name: Continuous Integration
+
 on:
   push:
     branches: [main, develop]
@@ -13,52 +14,11 @@ on:
       ]
   pull_request:
     branches: [develop]
+  workflow_dispatch:
+
 jobs:
-  integrate:
-    name: Install & Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v5
-        with:
-          version: 10.9.0
-      - name: Setup Node
-        uses: actions/setup-node@v6
-        with:
-          node-version: ${{ vars.NODE_VERSION }}
-          cache: "pnpm"
-      - name: Install
-        run: pnpm install --frozen-lockfile
-      - name: Build
-        run: pnpm run build
-  build:
-    needs: integrate
-    name: Build Docker Images
-    runs-on: ubuntu-latest
-    if: github.event_name != 'pull_request'
-    env:
-      ECR_REGISTRY: ${{ secrets.AWS_ECR_REGISTRY }}
-      BRANCH: ${{ github.ref_name }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - name: Setup QEMU
-        uses: docker/setup-qemu-action@v4
-      - name: Setup Buildx
-        uses: docker/setup-buildx-action@v4
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v6
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ vars.AWS_REGION }}
-      - name: Login to AWS ECR
-        uses: aws-actions/amazon-ecr-login@v2
-        with:
-          mask-password: "true"
-      - name: Build & Upload Docker Image to AWS ECR
-        run: docker buildx build --platform linux/amd64,linux/arm64 -f ./Dockerfile -t $ECR_REGISTRY/ph-auto-alter-art-influ:latest-$BRANCH --push .
+  ci:
+    uses: Pinehood/ph-devops/.github/workflows/reusable-node-ci.yml@master
+    secrets: inherit
+    with:
+      ecr_repository: "ph-auto-alter-art-influ"
