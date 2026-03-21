@@ -18,7 +18,7 @@ on:
 
 jobs:
   ci:
-    uses: Pinehood/ph-devops/.github/workflows/reusable-node-ci.yml@master
+    uses: Pinehood/ph-reusable-workflows/.github/workflows/node-ci.yml@main
     secrets: inherit
     with:
       ecr_repository: "ph-auto-alter-art-influ"
