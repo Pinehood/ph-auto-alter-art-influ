@@ -5,8 +5,9 @@
   "scripts": {
     "main": "tsx watch src/main.ts",
     "comb": "tsx watch src/combinator.ts",
-    "start": "node --env-file=.env --enable-source-maps dist/main.js",
-    "build": "tsc"
+    "format": "prettier --write \"src/**/*.ts\"",
+    "build": "tsc",
+    "start": "node --env-file=.env --enable-source-maps dist/main.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1019.0",
@@ -24,6 +25,7 @@
     "@types/fluent-ffmpeg": "^2.1.28",
     "@types/node": "^25.5.0",
     "@types/node-cron": "^3.0.11",
+    "prettier": "^3.8.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }

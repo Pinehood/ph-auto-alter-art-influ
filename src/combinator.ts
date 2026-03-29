@@ -51,15 +51,15 @@ async function run() {
       const reelsUrls = await Promise.all(
         reels.map((reel) => {
           return aws.getPresignedS3Url(
-            `reels/${reel.substring(reel.lastIndexOf("/") + 1)}`
+            `reels/${reel.substring(reel.lastIndexOf("/") + 1)}`,
           );
-        })
+        }),
       );
       await retry(() =>
         instagram.publishCarouselPost(
           reelsUrls.map((url) => ({ type: "video", url })),
-          caption
-        )
+          caption,
+        ),
       );
     }
   } catch (err: any) {
@@ -69,7 +69,7 @@ async function run() {
 
 (async function main() {
   logger.info(
-    'Starting "Pinehood\'s Automatic Alternative Artificial Influencer (Photo + Reel)"'
+    'Starting "Pinehood\'s Automatic Alternative Artificial Influencer (Photo + Reel)"',
   );
   await run();
 })().catch((err) => {

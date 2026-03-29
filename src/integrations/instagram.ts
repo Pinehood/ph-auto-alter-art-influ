@@ -28,7 +28,7 @@ export class Instagram {
     });
     const { data } = await axios.post(
       `${IG_GRAPH_BASE}/oauth/access_token`,
-      params
+      params,
     );
     return data as {
       access_token: string;
@@ -48,7 +48,7 @@ export class Instagram {
           caption,
           access_token: IG_ACCESS_TOKEN,
         },
-      }
+      },
     );
     const creationId = containerRes.data.id as string;
     if (!creationId) throw new Error("No creation_id from Instagram.");
@@ -60,7 +60,7 @@ export class Instagram {
           creation_id: creationId,
           access_token: IG_ACCESS_TOKEN,
         },
-      }
+      },
     );
     const post = publishRes.data;
     this.logger.info(`Photo Post published: ${post.id}`);
@@ -79,7 +79,7 @@ export class Instagram {
           caption,
           access_token: IG_ACCESS_TOKEN,
         },
-      }
+      },
     );
     const creationId = create.data.id as string;
     if (!creationId) throw new Error("No creation_id for Reel");
@@ -102,7 +102,7 @@ export class Instagram {
           creation_id: creationId,
           access_token: IG_ACCESS_TOKEN,
         },
-      }
+      },
     );
     const reel = publish.data;
     this.logger.info(`Video Reel published: ${reel.id}`);
@@ -111,7 +111,7 @@ export class Instagram {
 
   async publishCarouselPost(
     items: { url: string; type: "image" | "video" }[],
-    caption: string
+    caption: string,
   ) {
     if (items.length < 2 || items.length > 10) {
       throw new Error("Carousel must have between 2 and 10 items.");
@@ -139,7 +139,7 @@ export class Instagram {
           children: childIds.join(","),
           access_token: IG_ACCESS_TOKEN,
         },
-      }
+      },
     );
     const carouselId = carousel.id as string;
     for (let i = 0; i < 12; i++) {
@@ -156,7 +156,7 @@ export class Instagram {
     const { data: published } = await axios.post(
       `${IG_GRAPH_BASE}/${IG_USER_ID}/media_publish`,
       null,
-      { params: { creation_id: carouselId, access_token: IG_ACCESS_TOKEN } }
+      { params: { creation_id: carouselId, access_token: IG_ACCESS_TOKEN } },
     );
     this.logger.info(`Carousel published: ${published.id}`);
     return published;
@@ -172,7 +172,7 @@ export class Instagram {
           is_carousel_item: true,
           access_token: IG_ACCESS_TOKEN,
         },
-      }
+      },
     );
     return data.id as string;
   }
@@ -188,7 +188,7 @@ export class Instagram {
           is_carousel_item: true,
           access_token: IG_ACCESS_TOKEN,
         },
-      }
+      },
     );
     const id = data.id as string;
     for (let i = 0; i < 30; i++) {

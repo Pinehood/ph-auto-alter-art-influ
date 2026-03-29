@@ -42,7 +42,7 @@ export class AWS {
         ContentMD5: crypto.createHash("md5").update(buf).digest("base64"),
         ContentDisposition: `inline; filename="image.png"`,
         ServerSideEncryption: "AES256",
-      })
+      }),
     );
     fs.rmSync("image.png");
     return this.getPresignedS3Url(key);
@@ -56,7 +56,7 @@ export class AWS {
         Key: key,
         Body: fs.createReadStream(path),
         ContentType: "video/mp4",
-      })
+      }),
     );
     return this.getPresignedS3Url(key);
   }
@@ -68,7 +68,7 @@ export class AWS {
         Bucket: AWS_S3_BUCKET,
         Key: key,
       }),
-      { expiresIn: AWS_S3_TTL }
+      { expiresIn: AWS_S3_TTL },
     );
     this.logger.info(`Presigned URL generated: ${presigned}`);
     return presigned;

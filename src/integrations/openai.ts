@@ -74,7 +74,7 @@ export class OpenAi {
     });
     const imageData = image?.data?.[0]?.b64_json;
     this.logger.info(
-      `Generated image poster: ${imageData ? "success" : "failed"}`
+      `Generated image poster: ${imageData ? "success" : "failed"}`,
     );
     return imageData;
   }

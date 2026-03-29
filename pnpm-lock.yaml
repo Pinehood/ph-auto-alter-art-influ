@@ -48,6 +48,9 @@ importers:
       '@types/node-cron':
         specifier: ^3.0.11
         version: 3.0.11
+      prettier:
+        specifier: ^3.8.1
+        version: 3.8.1
       tsx:
         specifier: ^4.21.0
         version: 4.21.0
@@ -812,6 +815,11 @@ packages:
   path-expression-matcher@1.2.0:
     resolution: {integrity: sha512-DwmPWeFn+tq7TiyJ2CxezCAirXjFxvaiD03npak3cRjlP9+OjTmSy1EpIrEbh+l6JgUundniloMLDQ/6VTdhLQ==}
     engines: {node: '>=14.0.0'}
+
+  prettier@3.8.1:
+    resolution: {integrity: sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg==}
+    engines: {node: '>=14'}
+    hasBin: true
 
   progress@2.0.3:
     resolution: {integrity: sha512-7PiHtLll5LdnKIMw100I+8xJXR5gW2QwWYkT6iJva0bXitZKa/XMrSbdmg3r2Xnaidz9Qumd0VPaMrZlF9V9sA==}
@@ -1972,6 +1980,8 @@ snapshots:
   parse-cache-control@1.0.1: {}
 
   path-expression-matcher@1.2.0: {}
+
+  prettier@3.8.1: {}
 
   progress@2.0.3: {}
 

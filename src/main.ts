@@ -67,7 +67,7 @@ async function run() {
 
 (async function main() {
   logger.info(
-    'Starting "Pinehood\'s Automatic Alternative Artificial Influencer (Photo + Reel)"'
+    'Starting "Pinehood\'s Automatic Alternative Artificial Influencer (Photo + Reel)"',
   );
   await run();
   cron.schedule(CRON_EXPR, async () => await run(), { timezone: TZ });

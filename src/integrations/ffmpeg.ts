@@ -120,10 +120,10 @@ export class FFMPEG {
             ffmpeg.ffprobe(p, (err, data) => {
               if (err) return reject(err);
               const vs = data.streams.find(
-                (s: any) => s.codec_type === "video"
+                (s: any) => s.codec_type === "video",
               );
               const as = data.streams.find(
-                (s: any) => s.codec_type === "audio"
+                (s: any) => s.codec_type === "audio",
               );
               const r = (vs?.r_frame_rate || "0/0").split("/");
               const fps =
@@ -140,23 +140,23 @@ export class FFMPEG {
                 hasAudio: !!as,
               });
             });
-          })
-      )
+          }),
+      ),
     );
     const first = probes[0];
     const allSameVideoCodec = probes.every((s) => s.vcodec === first.vcodec);
     const allSameAudioPresence = probes.every(
-      (s) => s.hasAudio === first.hasAudio
+      (s) => s.hasAudio === first.hasAudio,
     );
     const allSameAudioCodec =
       !first.hasAudio || probes.every((s) => s.acodec === first.acodec);
     const allSameSize = probes.every(
-      (s) => s.width === first.width && s.height === first.height
+      (s) => s.width === first.width && s.height === first.height,
     );
     const allSameFps = probes.every((s) =>
       s.fps && first.fps
         ? Math.abs(s.fps - first.fps) < 0.01
-        : s.fps === first.fps
+        : s.fps === first.fps,
     );
     const canFastConcat =
       allSameVideoCodec &&
@@ -184,7 +184,7 @@ export class FFMPEG {
       return output;
     }
     this.logger.info(
-      "FFmpeg: inputs differ; re-encoding with concat filter..."
+      "FFmpeg: inputs differ; re-encoding with concat filter...",
     );
     const allHaveAudio = probes.every((p) => p.hasAudio);
     await new Promise<void>((resolve, reject) => {
