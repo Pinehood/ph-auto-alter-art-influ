@@ -17,3 +17,11 @@ Node.js and TypeScript application that runs a cron job, which **creates an Phot
 3. Meta Developer App with appropriate secrets and configs to be used
 4. OpenAI API keys, with relevant completed "Verify Organization" verification
 5. AWS account with S3 setup and access and relevant credentials
+
+# Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md). For security reports, see [SECURITY.md](SECURITY.md).
+
+# License
+
+This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE).

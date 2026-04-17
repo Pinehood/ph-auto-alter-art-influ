@@ -11,6 +11,7 @@ on:
         ".prettierrc",
         ".prettierignore",
         ".github",
+        "LICENSE",
       ]
   pull_request:
     branches: [main, develop]
